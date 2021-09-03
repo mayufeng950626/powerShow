@@ -1,0 +1,6 @@
+今天做项目的时候，碰到一个问题，需要把String类型的变量转化成int类型的。按照常规，我写了var i = Integer.parseInt("112");但控制台报错，说是“'Integer' 未定义”。后来，才知道，原来js中String转int和Java中不一样，不能直接把Java中的用到js中。改成var j = parseInt("11");就ok了。
+
+备注：无论是 Java 还是 JavaScript, parseInt 方法都有两个参数, 第一个参数就是要转换的对象, 第二个参数是进制基数, 可以是 2, 8, 10, 16, 默认以 10 进制处理. 但在 JavaScript 中, 0 开始的数被认为使用 8 进制处理, 0x 的数被认为是用 16 进制来处理
+
+
+praseFloat转换为浮点型

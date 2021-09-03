@@ -1,0 +1,40 @@
+JVM的参数类型：
+		标准参数
+			-help
+			-server -client
+			-version -showversion
+			-cp -classpath
+		X参数
+			非标准化参数
+			-Xint：解释执行
+			-Xcomp： 第一次使用就编译成本地代码
+			-Xmixed： 混合模式，JVM自己来决定是否编译成本地代码
+		XX参数
+			Boolean类型：
+				格式： -XX:[+-]<name>表示启用或者禁用name属性
+				比如： -XX：+UseConcMarkSweepGc
+				       -XX: +UseG1GC
+			非Boolean类型：
+				格式：-XX：<name>=<value>表示name的属性值是value
+				比如： -XX：MaxGCPauseMillis=500
+						XX: GCtimeRatio=19
+				设置JVM的内存-Xmx，-Xms
+					-Xms等价于-XX：InitialHeapSize
+					-Xmx等价于-XX: MaxHeapSize
+运行时JVM参数查看：
+		-XX：+PrintFlagsInitial   查看初始值
+		-XX: +PrintFlagsFinal     查看最终值
+		-XX: +UnlockExperimentalVMOptions解锁实验参数
+		-XX: +UnlockDiagnosticVMOptions解锁诊断参数
+		-XX：+PrintCommandLineFlags打印命令行参数
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		

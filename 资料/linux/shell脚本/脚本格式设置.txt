@@ -1,0 +1,1 @@
+在windows端编辑的linux脚本格式是windows的，放在linux端会乱码，可以在linux使用set of  unix命令

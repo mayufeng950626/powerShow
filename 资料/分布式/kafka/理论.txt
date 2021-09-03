@@ -1,0 +1,66 @@
+kafka是基于zookeeper一个高吞吐量的、持久性的、分布式发布订阅系统
+kafka可以完成每秒百万级别的生产和消费
+快速的原因：
+	kafka利用了：磁盘顺序读写速度超过内存随机读写
+持久性：
+	Kafka有完善的消息存储机制，可以确保数据高效安全的持久化，分区理论，有个leader领导着，和多个follwer
+
+kafka主要应用在实时计算领域，可以和Flume、Spark、Flink等框架结合在一块使用
+
+
+kafka组件：
+	Broker： 消息的代理，kafka集群中的一个节点称为一个Broker
+	Topic： 主题，kafka处理的消息的不同分类（逻辑概念）
+	Partition： Topic物理上的分组，一个Topic在Broker中被分为1个或者多个Partition，分区在创建Topic的时候指定，每个Topic都是有分区的，至少一个
+	
+	
+	
+	
+kafka配置
+	在config的server.properties中修改
+		监听本机的listeners   IP+端口号
+		advertised.listeners
+	    log.dirs
+		zookeeper.connect
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	

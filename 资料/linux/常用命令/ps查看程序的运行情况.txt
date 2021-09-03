@@ -1,0 +1,2 @@
+ps展示程序运行情况
+  查用语法： ps -ef    ps   -au   ps  -aux

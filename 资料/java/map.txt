@@ -1,0 +1,9 @@
+map
+	使用hashmap是无序的，跟添加的顺序无关
+	使用linkhashmap是有序的
+有时候要有序遍历map的时候使用linkhashmap
+
+
+arraylist和linkedlist和vector是有序的
+
+set无序，但是key值唯一

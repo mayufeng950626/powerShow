@@ -1,0 +1,15 @@
+ netstat -tunlp|grep 5601
+ 
+ 根据进程号查询进程
+ 可以使用ps -ef|grep  进程号，查询此进程对应的项目信息
+ 
+ 
+ 
+ 
+ windows查看端口占用
+	netstat -ano|findstr "8080"
+	查询得到PID
+	根据PID找到对应的进程
+	tasklist|findstr  5555
+	在任务管理器杀掉对应进程
+ 

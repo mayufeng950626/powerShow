@@ -1,0 +1,26 @@
+ElasticSearch开源的搜索引擎
+
+传统的将数据为三大类：
+	结构化数据（一般会用数据库的表存储）  优点：方便管理  缺点：不方便管理
+	非结构化数据（图片）  服务器日志，视频，图片
+	半结构化数据  xml，html
+	
+	
+
+	
+	
+	
+	
+ElasticSearch的核心
+		ElasticSearch
+		Beats
+		Kibana    用于展示的项目
+		Logstash  用于采集和传输的项目
+		
+		
+
+ElasticSearch基于lucene开发
+	
+	
+	
+	跟solr相比，ElasticSearch易于安装且非常轻巧

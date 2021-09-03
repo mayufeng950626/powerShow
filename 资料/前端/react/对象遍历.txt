@@ -1,0 +1,20 @@
+对象遍历
+
+1，for-in遍历
+
+for-in是为遍历对象而设计的，不适用于遍历数组。
+
+遍历数组的缺点：数组的下标index值是数字，for-in遍历的index值"0","1","2"等是字符串
+for (var index in arr){
+    console.log(arr[index]);
+    console.log(index);
+}
+
+
+实际运用，反洗钱应用中，弹框表单中，确定保存时，如果值被删除后，不是undefined而是''
+所以保存前做了转换
+for (var index in arr){
+    if(arr[index] === ''){
+		arr[index] = undefined
+	}
+}

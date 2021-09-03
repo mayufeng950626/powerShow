@@ -1,0 +1,50 @@
+Object函数提供了一个叫做assign的函数，用来合并多个对象。
+
+Object.assign(...)；
+
+你可以传递多个对象给该函数，这些对象中的自有且可枚举的属性，会被拷贝给第一个对象。
+
+ 
+
+var a={name:'jack'};
+var b={age:10};
+Object.assign(a,b);
+console.log(a) // 'Object {name: "jack", age: 10}'
+ 
+
+ 
+
+ 
+
+该方法会修改传入的第一个对象，所以要小心这种改变，由于，函数会在最后return这第一个对象，
+
+你可以传一个{}，作为函数的第一个实参，这样剩下对象的自有且可枚举的属性，会被拷贝到这个空对象中并返回这个对象，这样可以避免不需要的修改。
+
+var a={name:'jack'};
+var b={age:10};
+var c=Object.assign({},a,b);
+console.log(c) // 'Object {name: "jack", age: 10}'
+对于重复出现的属性，会被相对于右边的值覆盖，因为该函数是从左到右操作参数的。
+
+所以，实参的顺序会影响到最终的结果。
+
+var a={name:'jack'};
+var b={name:10};
+Object.assign(a,b);
+console.log(a); // 'Object {name: 10}'
+当第一个对象中，存在一个只读属性，而接下来的对象里，也存在一个同名的属性时，就会产生一个TypeError
+
+Cannot assign to read only property '属性名' of object '#<Object>'
+
+ 
+
+var a={name:'jack'};
+Object.defineProperty(a,'name',{writable:false});//设置为只读
+var b={name:10};
+Object.assign(a,b);//报错
+ 
+
+虽然产生了错误，但并不意味着所有的拷贝都失败，已经拷贝成功的属性不会受到影响，还未拷贝的属性不会再被拷贝。
+
+    //解决方法
+    Object.assign({},a,b);

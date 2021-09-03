@@ -1,0 +1,11 @@
+一般情况下，第一行会声明此文档为可执行的脚本
+#!/bin/bash
+如果有外部参数的话可以用$+数字来接收参数
+如：
+	name=$1
+	age=$2
+	phone=$3
+输出
+	echo $name
+	echo $age
+	echo $phone

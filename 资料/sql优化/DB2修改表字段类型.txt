@@ -1,0 +1,1 @@
+alter table TM_CIS_DATA_ITEM_DEF alter ORI_NAME set data type varchar(400);

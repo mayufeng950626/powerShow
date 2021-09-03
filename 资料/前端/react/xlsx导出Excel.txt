@@ -1,0 +1,51 @@
+//json 数据
+var data = [{
+        "a": 1,
+        "x": 2,
+        "b": 3,
+        "y": 4,
+                "success":true
+    }, {
+        "a": 1,
+        "x": 2,
+        "b": 3,
+        "y": 4,
+                "success":false
+    }
+];
+//数据表格
+var table=[];
+table.push({
+    A:"列A",
+    B:"列B",
+    C:"列C",
+    D:"列D",
+    E:"列E"
+});
+data.forEach(function (item) {
+    var row={
+        A:item.b,
+        B:item.y,
+        C:item.a,
+        D:item.x,
+        E:(item.success?'成功':'失败')
+    };
+    table.push(row);
+});
+//创建book
+var wb = XLSX.utils.book_new();
+//json转sheet
+var ws = XLSX.utils.json_to_sheet(table, {header:["A","B","C","D","E"], skipHeader:true});
+//设置列宽
+ws['!cols']= [
+    {width: 15},
+    {width: 15},
+    {width: 15},
+    {width: 15},
+    {width: 10}
+];
+var timestamp = (new Date()).getTime();
+//sheet写入book
+XLSX.utils.book_append_sheet(wb, ws, "file");
+//输出
+XLSX.writeFile(wb,"file"+timestamp+".xlsx");

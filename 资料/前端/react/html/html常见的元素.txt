@@ -1,0 +1,18 @@
+header区的元素
+	meta     
+	title   主题
+	style   引入css
+	link    关联资源
+	script  引入js
+	base    指定基础路径
+	
+	
+	
+body区的元素
+	div/section/article/aside/header/footer
+	p
+	span/em/strong
+	table/thead/tbody/tr/td
+	ul/ol/li/dl/dt/dd
+	a
+	form/input/select/textarea/button

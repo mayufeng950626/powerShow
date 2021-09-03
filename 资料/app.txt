@@ -1,0 +1,54 @@
+/**
+ * Sample React Native App
+ * https://github.com/facebook/react-native
+ *
+ * @format
+ * @flow strict-local
+ */
+
+import React from 'react';
+import type {Node} from 'react';
+import {Text, useColorScheme, View} from 'react-native';
+
+import {Colors} from 'react-native/Libraries/NewAppScreen';
+const ws = new WebSocket('ws://192.168.43.251:8088/ws');
+
+ws.onopen = () => {
+  // connection opened
+  ws.send('哥哥操我'); // send a message
+};
+
+ws.onmessage = e => {
+  // a message was received
+  alert(e.data);
+};
+
+ws.onerror = e => {
+  // an error occurred
+  console.log(e.message);
+};
+
+ws.onclose = e => {
+  // connection closed
+  console.log(e.code, e.reason);
+};
+const App: () => Node = () => {
+  const isDarkMode = useColorScheme() === 'dark';
+
+  const backgroundStyle = {
+    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
+  };
+  /*
+1.RN中默认容器 布局方式 都是flex
+2.方向 flex-direction：colum
+ */
+  return (
+    <View style={{backgroundColor: 'red'}}>
+      <Text>维度1</Text>
+      <Text>维度2</Text>
+        <Text>维度3</Text>
+    </View>
+  );
+};
+
+export default App;

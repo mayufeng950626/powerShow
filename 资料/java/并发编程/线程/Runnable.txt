@@ -1,0 +1,4 @@
+使用一个类实现Runnable接口，重写run方法
+在调用的时候将类传递进去
+ Thread thread=new Thread(new RunnaleDemo(),"runnable");
+        thread.start();

@@ -1,0 +1,4 @@
+Ajax轮询
+Long pull
+websocket持久化协议
+

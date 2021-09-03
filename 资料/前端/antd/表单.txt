@@ -1,0 +1,7 @@
+在antd中表单使用form组件
+	引入方式为： import {Form} from 'antd'
+	通常情况下，为了方便设置表单的一个label会使用form里面的item元素
+	const Item = Form.item
+
+form的表单校验
+	使用validateFieldAndScroll

@@ -1,0 +1,14 @@
+chmod
+mv
+cp
+mkdir
+touch
+vi
+vim
+cd 
+tail
+ps -ef|grep ''
+ls
+pwd
+rm
+rmdir

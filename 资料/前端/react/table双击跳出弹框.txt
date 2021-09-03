@@ -1,0 +1,45 @@
+<Table
+  onRow={record => {
+    return {
+      onClick: event => {}, // 点击行
+      onDoubleClick: event => {}, //双击
+      onContextMenu: event => {}, //右键菜单
+      onMouseEnter: event => {}, // 鼠标移入行
+      onMouseLeave: event => {},// 鼠标移出行
+    };
+  }}
+  onHeaderRow={column => {
+    return {
+      onClick: () => {}, // 点击表头行
+    };
+  }}
+/>
+
+
+
+
+
+
+
+
+
+
+//双击事件
+  onRowDoubleClick(record, index, event) {
+    console.log(index, record);
+    event.stopPropagation(); //阻止默认事件
+  },
+
+render(){
+    return(
+        <Table  
+        	columns={columns}  
+       		dataSource={data} 
+            onRow={(record,rowkey)=>{
+                return{
+                    onDoubleClick : this.onRowDoubleClick.bind(this,record,rowkey)    // record 指的当前行的数据内容，rowkey指的是当前行的下标
+                }
+            }}
+        />
+    )
+}

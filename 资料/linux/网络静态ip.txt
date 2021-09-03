@@ -1,0 +1,11 @@
+编辑
+	/etc/sysconfig/network-xxxxx/ifxxxx-ens33
+在这个文件中定义局域网地址，网关，dns
+
+
+使网卡生效
+	nmcli c reload
+
+
+重启
+	reboot

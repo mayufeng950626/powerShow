@@ -1,0 +1,27 @@
+mapper中切割字符串遍历
+
+在安徽二期需求中，遭遇搜索几个值之间的数，而传参使用String传递
+org_code in
+<foreach  item="item"  index="index"  collection = "xxx.spilt(',')" open="(" separator=","  close=")">
+
+如果是list的话
+<foreach  item="item"  index="index"  collection = "list" open="(" separator=","  close=")">
+
+说明collection承接的是一个集合，像字符串切割后是字符串数组
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<trim  prefix="WHERE"  prefixOverrides="AND" >

@@ -1,0 +1,12 @@
+cookie
+	以键值对的形式存储信息在浏览器
+	cookie不能跨域，当前以及父级域名可以取值
+	cookie可以设置有效期
+	cookie可以设置path
+	
+	
+session
+	基于服务器内存的缓存（非持久化），可保存请求会话
+	每个session通过sessionid来区分每个请求
+	session可以设置有效期
+	session以一个键值对存储

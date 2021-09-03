@@ -1,0 +1,5 @@
+private static Map<String,String> map = new HashMap<String,String>();
+static{
+	map.put("","");
+}
+或者定义枚举类

@@ -1,0 +1,34 @@
+yum install java-1.8.0-openjdk-devel.x86_64
+查看jdk版本
+java -version
+
+
+
+安装mysql
+yum install mysql
+yum install mysql-server
+yum install mysql-devel
+
+
+
+
+service mysqld start      --启动mysql
+service mysqld stop       --关闭mysql·
+lsof -i:3306              --数据库端口是否开启
+
+
+查看mysql版本
+mysql --version
+
+
+
+
+登录mysql
+mysql -u root -p
+设置mysql初始密码
+ALTER USER 'root'@'localhost' IDENTIFIED BY '514647';
+
+
+
+打开远程访问：
+GRANT ALL PRIVILEGES ON *.* TO 'root'@'%'IDENTIFIED BY '514647' WITH GRANT OPTION;

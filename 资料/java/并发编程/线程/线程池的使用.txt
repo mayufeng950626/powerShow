@@ -1,0 +1,40 @@
+ExecutorService的三种线程池比较
+		Executors.newCachedThreadPool(),快，这种是没有限定最大线程数的，相当于有多少任务，就会有多少线程，占用CPU
+		Executors.newFixedThreadPool(),较慢，设定了多少线程为一组，只有完成对应任务，才会开启一组新的线程
+		Executors.newSingleThreadExecutor(),最慢，相当于单例模式，一个线程干完任务后，继续干任务
+		
+
+声明方式：	
+		ExecutorService  exectorService1 = Executors.newCachedThreadPool();
+		ExecutorService  exectorService2 = Executors.newFixedThreadPool(10);
+		ExecutorService  exectorService3 = Executors.newSingleThreadExecutor();
+		
+		
+		
+		
+		
+自定义线程池：
+	ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(10,20,0L,TimeUtil.MILLISECONDS,new ArrayBlockingQueue<Runnable>(10))
+	
+	
+	
+	
+线程池的4种拒绝策略
+	
+		
+		
+
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		在线程池中使用Runnable调用是没有返回值的，使用callable配合future可以获取每个线程的返回值
+		
+		
+		
+		在callable中使用线程池的shutdown，结果下次再进去访问的时候报错，使用Runnale不会

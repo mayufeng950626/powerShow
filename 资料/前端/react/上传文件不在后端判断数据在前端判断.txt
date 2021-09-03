@@ -1,0 +1,34 @@
+由于上传的文件数据量较大，所以不方便在后端判断数据，所以要在前端读取数据先，使用xlsx插件
+<Upload action="" accept=".xlsx, .xls" beforeUpload={this.getTextInfo} showUploadList={false}>
+        <Button icon='upload'>导入</Button>
+ </Upload>
+
+ 
+ 
+ 
+ 
+ 
+ 
+getTextInfo=(file)=>{
+    const reader=new FileReader();
+    reader.readAsText(file);
+    reader.onload=(result)=>{
+        let targetNum=result.target.result;
+        targetNum=targetNum.replace(/[\n\r]/g,'');//对获取的内容进行修改
+        targetNum=targetNum.replace(/[ ]/g,'');//对获取内容进行修改
+        this.props.dispatch({
+            type:'model/save',
+            payload:targetNum,
+        })
+    
+    }
+    return false;
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 

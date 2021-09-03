@@ -1,0 +1,3 @@
+<if test="xxx!=null and xxx!='' ">
+xxx = #{xxx}
+</if>

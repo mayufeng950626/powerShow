@@ -1,0 +1,78 @@
+函数式变成，可以将函数作为一个传参作为传递
+可以理解为一种匿名函数的代替
+
+lambda表达式的形式
+(parameters) -> expression
+(parameters) -> {statement;}
+
+形式一： 没有参数
+() -> System.out.println("hello world");
+
+形式二： 只有一个参数
+name -> System.out.println("hello world from" + name + "!");
+
+形式三： 没有参数，但是逻辑复杂
+() -> {
+	System.out.println("hello");
+	System.out.println("world");
+}
+
+形式四： 有两个参数的方法
+BinaryOperator<Long> functionAdd = (x,y) -> x + y;
+Long result = functionAff.apply(1L,2L);
+
+
+
+函数式接口：
+	接口中只有一个抽象方法
+	/**
+	 * Sku选择谓词接口
+	 */
+	public interface SkuPredicate{
+		/**
+		*选择判断标准
+		*@param sku
+		*@return
+		*/
+		boolean test(Sku sku);
+		
+	}
+
+	
+public class Version6Test {
+	@Test
+	public void filterSkus() {
+		List<Sku> cartSkuList = CartService.getCartSkuList();
+		// 过滤商品单价大于1000的商品
+		LIst<Sku> result = CartService.filterSkus(cartSkuList,(Sku sku) -> sku.getSkuPrice() >1000);
+		System.out.println(JSON.toJSONString(result, true));
+	}
+}
+
+
+java8的函数式接口注解： @FunctionInterface
+
+
+
+函数式接口的抽象方法签名：函数描述符
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

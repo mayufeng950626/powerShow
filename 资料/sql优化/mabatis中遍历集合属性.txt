@@ -1,0 +1,3 @@
+<foreach item ="item"  index="index"  collection="functions"  open="("  separator="," close=")">
+#{item.xxx}
+</foreach>
