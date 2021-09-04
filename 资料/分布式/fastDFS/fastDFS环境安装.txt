@@ -1,0 +1,117 @@
+在github上找到libfastcommon，
+在centos上先安装依赖环境
+yum install git gcc gcc-c++ make automake autoconf libtool pcre pcre-devel zlib zlib-devel openssl-devel wget vim -y
+
+解压libfastcommon
+在libfastcommon的目录下执行./make.sh
+	再执行./make.sh install
+	
+解压fastdfs
+在fastdfs的目录下执行./make.sh
+	再执行./make.sh install
+
+	
+拷贝fastdfs的配置文件
+在conf目录下cp * /etc/fdfs/
+
+
+
+
+配置tracker（要比stroage先启动）
+cd /etc/fdfs/
+修改tracker文件tracker.conf文件
+修改基础路径base_path = /usr/local/fastdfs/tracker（没有这个路径的话需要创建）
+启动tracker      /usr/bin/fdfs_trackerd /etc/fdfs/tracker.conf
+
+
+
+
+配置stroage
+cd /etc/fdfs/
+修改stroage文件stroage.conf文件
+group_name = mayufeng
+base_path = /usr/local/fastdfs/storage
+store_path0 = /usr/local/fastdfs/storage
+tracker_server = 47.113.198.22:22122
+启动stroage      /usr/bin/fdfs_storaged  /etc/fdfs/storage.conf
+
+
+修改client.conf
+base_path = /usr/local/fast/client
+tracker_server = 47.113.198.22:22122
+
+
+
+测试上传命令
+/usr/bin/fdfs_test /etc/fdfs/client.conf   upload my.jpg（自己的文件）
+
+
+整合nginx（一定要和stroage安装在同一台机器）
+解压fastdfs-nginx-module
+修改src下面的conf文件
+	ngx_module_incs="/usr/include"
+	CORE_INCS="$CORE_INCS /usr/include"
+先记录fastdfs-nginx-module的src绝对地址
+/root/fastDFS/fastdfs-nginx-module-1.22/src
+
+	
+	
+	
+下载nginx安装包	
+解压nginx压缩包
+	
+./configure \
+--prefix=/usr/local/nginx \
+--pid-path=/var/run/nginx/nginx.pid \
+--lock-path=/var/lock/nginx.lock \
+--error-log-path=/var/log/nginx/error.log \
+--http-log-path=/var/log/nginx/access.log \
+--with-http_gzip_static_module \
+--http-client-body-temp-path=/var/temp/nginx/client \
+--http-proxy-temp-path=/var/temp/nginx/proxy \
+--http-fastcgi-temp-path=/var/temp/nginx/fastcgi \
+--http-uwsgi-temp-path=/var/temp/nginx/uwsgi \
+--http-scgi-temp-path=/var/temp/nginx/scgi \
+--add-module=/root/fastDFS/fastdfs-nginx-module-1.22/src
+
+
+make
+make install
+	
+	
+	
+修改mod_fastdfs.conf文件
+base_path=/usr/local/fastdfs/temp
+tracker_server=47.113.198.22:22122
+group_name=mayufeng
+url_have_group_name = true
+store_path0=/usr/local/fastdfs/storage
+
+
+修改/usr/local/nginx/conf/nginx.conf
+   location /mayufeng/M00 {
+        ngx_fastdfs_module;
+    }
+	
+	
+	
+启动nginx
+在sbin目录下启动./nginx
+nginx重启命令./nginx -s reload
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
