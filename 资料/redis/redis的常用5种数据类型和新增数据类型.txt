@@ -1,0 +1,50 @@
+redis是开源的key-value存储系统
+和Memcached类似，它支持存储的value类型相对更多，包括String（字符串）、list（链表）、set（集合）、Zset（sorted set---有序集合）和hash（哈希类型）
+这些数据类型都支持push/pop、add/remove及取交集并集及更丰富的操作，而且这些操作都是原子性的
+
+
+
+应用场景：
+	配合关系型数据库做高速缓存
+	
+	
+	
+	
+redis的安装：
+	安装C语言的编译环境
+		yum install centos-release-scl scl-utils-build
+		yum install -y devtoolset-8-toolchain
+		scl enable devtoolset-8 bash
+		我安装的时候提示没有这些玩意，不过我本身已经有gcc编译环境，直接进入安装目录执行make和make  install
+默认安装路径是/usr/local/bin
+	其中redis-benchmark ：性能测试工具，可以在服务器运行，看性能如何
+	redis-check-aof：修复有问题的AOF文件
+	redis-check-rdb ：修复有问题的RDB文件
+	redis-sentinel：集群使用
+	redis-server：服务启动命令
+	redis-cli： 客户端操作入口
+	
+	
+前台启动：
+	redis-server
+后台启动：
+	找到安装包的位置  cd ~/mayufeng/redis/redis-6.2.5/
+	修改redis.conf文件 修改daemonize为 yes
+
+	将配置文件拷贝cp  redis.conf  /usr/local/bin
+	重新回到cd /usr/local/bin
+	查看进程ps -ef|grep redis
+	
+	
+	
+测试redis-cli
+	输入ping
+	输出pong
+	可以使用shutdown在redis-cli关闭redis或者使用kill -9 杀掉对应进程
+	
+	
+	
+	
+redis默认16个数据库，类似数组下标从0开始，初始默认使用0号库
+	切换数据库，使用redis-cli连接数据库后使用 select 数组下标，如select 1
+	
