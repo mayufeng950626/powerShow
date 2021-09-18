@@ -1,0 +1,2 @@
+mysql -u root -p 使用root账户登录，需要使用密码
+use 数据库名       切换数据库

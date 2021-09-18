@@ -1,0 +1,8 @@
+getReactDom=(tab)=>{
+	const OtherComponent = require('../CheckModal/${tab}')
+	return (
+		<div key={tab}>
+			<OtherComponent />
+		</div>
+	)
+}

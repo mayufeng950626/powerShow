@@ -1,0 +1,16 @@
+在form表单中需要修改某个label的样式
+              <FormItem rules={[{required:true}]}
+                        label={<span style={{color: 'red'}}>不良征信记录或违法违规记录</span>} name="badHistory" >
+                <Radio.Group name="radiogroup" defaultValue={1}>
+                  <Radio value={1}>否</Radio>
+                  <Radio value={2}>是</Radio>
+                </Radio.Group>
+
+              </FormItem>
+			  
+			  
+			  
+antd的form的label标签是接收  String | ReactNode 类型的
+
+
+ReactNode既是代表可以插入任何div标签的react代码
