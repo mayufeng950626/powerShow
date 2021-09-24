@@ -1,0 +1,47 @@
+将文件上传至/usr/local
+
+解压 elasticsearch-7.13.2-linux-x86_64.tar.gz
+	 kibana-7.13.2-linux-x86_64
+	 logstash-7.13.2-linux-aarch64.tar.gz
+
+在elasticsearch目录下创建data目录
+	mkdir data
+
+
+因为安全问题，elastic不允许root用户直接运行，所以要创建新用户
+	1.在root中创建新用户
+		useradd  esuser
+		passwd  esuser
+		chown -R esuser /usr/local/elasticsearch-7.4.2/
+
+
+
+
+修改配置文件
+	/elasticsearch-7.13.2/config/elasticsearch.yml
+	/elasticsearch-7.13.2/config/jvm.options
+	
+修改用户可操控的线程数
+	vim /etc/security/limits.conf 
+	
+	最下面追加
+	esuser soft nofile 65536
+	esuser hard nofile 131072
+	esuser soft nproc 4096
+	esuser hard nproc 4096
+
+
+	修改/etc/sysctl.conf 
+ 
+	追加 vm.max_map_count=262145
+	
+	刷新 sysctl -p
+
+
+	
+后台启动命令：
+	./elasticsearch  -d
+	
+快速关闭：
+	jps
+	杀掉对应进程

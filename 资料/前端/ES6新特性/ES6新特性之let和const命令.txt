@@ -1,0 +1,23 @@
+ES6之前使用：
+	var定义的变量不能控制在指定的作用域，在作用域外也能拿到
+		如：
+			for(var i=0;i<5;i++){
+				console.log(i)
+			}
+			console.log('外围取值i'+i)   //  不报错
+		
+
+ES6种新增了两个关键字let和const
+		let关键字：所声明的变量只能在let命令所存在的代码块中有效
+		
+			for(let i=0;i<5;i++){
+				console.log(i)
+			}
+			console.log('外围取值i'+i)    //  会报错
+		
+		
+		
+		
+		const关键字：所声明的变量是常量，不能被修改
+			const a = 'abc'
+			a = '123' // 报错
