@@ -25,7 +25,9 @@ kafkaÅäÖÃ
 	
 	
 	
-	
+	kafkaºóÌ¨Æô¶¯ÃüÁî
+		nohup ./kafka-server-start.sh ../config/server.properties  1>kafka.out 2>&1 &
+		nohup ./kafka-server-start.sh ../config/server.properties  1>zookeeper.out 2>&1 &
 	
 	
 	
