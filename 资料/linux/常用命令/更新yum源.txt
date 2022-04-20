@@ -1,0 +1,275 @@
+华为云切换yum源
+﻿完美解决CentOS8 yum安装AppStream报错，更新yum后无法makecache的问题
+问题
+CentOS 8 yum安装软件时，提示无法从AppStream下载
+自动探测
+自动换行
+[root@C8-3 ~]# yum -y install httpd mariadb-server mariadb php php-mysql
+Repository AppStream is listed more than once in the configuration
+Repository extras is listed more than once in the configuration
+Repository PowerTools is listed more than once in the configuration
+Repository centosplus is listed more than once in the configuration
+Repository fasttrack is listed more than once in the configuration
+CentOS-8 - AppStream                           0.0  B/s |   0  B     00:08    
+Failed to download metadata for repo 'AppStream'
+Error: Failed to download metadata for repo 'AppStream'
+ 
+先排除网络问题
+检查网通不通，然后确定DNS解析是否正确。
+自动探测
+自动换行
+[root@C8-3 ~]# ping baidu.com
+PING baidu.com (220.181.38.148) 56(84) bytes of data.
+64 bytes from 220.181.38.148 (220.181.38.148): icmp_seq=1 ttl=128 time=12.1 ms
+64 bytes from 220.181.38.148 (220.181.38.148): icmp_seq=2 ttl=128 time=12.2 ms
+64 bytes from 220.181.38.148 (220.181.38.148): icmp_seq=3 ttl=128 time=11.7 ms
+64 bytes from 220.181.38.148 (220.181.38.148): icmp_seq=4 ttl=128 time=13.5 ms
+64 bytes from 220.181.38.148 (220.181.38.148): icmp_seq=5 ttl=128 time=12.2 ms
+64 bytes from 220.181.38.148 (220.181.38.148): icmp_seq=6 ttl=128 time=12.1 ms
+64 bytes from 220.181.38.148 (220.181.38.148): icmp_seq=7 ttl=128 time=13.9 ms
+64 bytes from 220.181.38.148 (220.181.38.148): icmp_seq=8 ttl=128 time=11.4 ms
+64 bytes from 220.181.38.148 (220.181.38.148): icmp_seq=9 ttl=128 time=13.9 ms
+^C
+--- baidu.com ping statistics ---
+9 packets transmitted, 9 received, 0% packet loss, time 31ms
+rtt min/avg/max/mdev = 11.394/12.554/13.949/0.899 ms
+ 
+有可能是所在网络环境在出口封了相应端口，需用其他方式，比如VPN解决。
+更换国内yum源
+我们无法使用CentOS原生yum源就是因为网络问题，你懂的。
+为了快，更换国内yum源，推荐阿里云yum或者腾讯yum。网易没落了。
+1.
+阿里yum源： ﻿https://developer.aliyun.com/mirror/centos﻿
+1.
+腾云yum源： ﻿https://mirrors.tencent.com/help/centos.html﻿
+自动探测
+自动换行
+[root@C8-3 ~]# mv /etc/yum.repos.d/CentOS-Base.repo /etc/yum.repos.d/CentOS-Base.repo.backup.3
+[root@C8-3 ~]# wget -O /etc/yum.repos.d/CentOS-Base.repo http://mirrors.cloud.tencent.com/repo/centos8_base.repo﻿
+--2020-11-02 20:51:42--  http://mirrors.cloud.tencent.com/repo/centos8_base.repo﻿
+Resolving mirrors.cloud.tencent.com (mirrors.cloud.tencent.com)... 111.231.36.190
+Connecting to mirrors.cloud.tencent.com (mirrors.cloud.tencent.com)|111.231.36.190|:80... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 1792 (1.8K) [application/octet-stream]
+Saving to: ‘/etc/yum.repos.d/CentOS-Base.repo’
+ 
+/etc/yum.repos.d/Ce 100%[==================>]   1.75K  --.-KB/s    in 0s      
+ 
+2020-11-02 20:51:46 (65.6 MB/s) - ‘/etc/yum.repos.d/CentOS-Base.repo’ saved [1792/1792]
+ 
+清理之前的yum缓存
+自动探测
+自动换行
+[root@C8-3 ~]# yum clean all
+Repository AppStream is listed more than once in the configuration
+Repository extras is listed more than once in the configuration
+Repository PowerTools is listed more than once in the configuration
+Repository centosplus is listed more than once in the configuration
+Repository fasttrack is listed more than once in the configuration
+18 files removed
+ 
+建立新的缓存
+自动探测
+自动换行
+[root@C8-3 ~]# yum makecache
+Repository AppStream is listed more than once in the configuration
+Repository extras is listed more than once in the configuration
+Repository PowerTools is listed more than once in the configuration
+Repository centosplus is listed more than once in the configuration
+Repository fasttrack is listed more than once in the configuration
+CentOS-8 - AppStream                           0.0  B/s |   0  B     00:04    
+Failed to download metadata for repo 'AppStream'
+Error: Failed to download metadata for repo 'AppStream'
+ 
+makecache的时候报错了！
+解决makecahe报错
+1.
+Failed to download metadata for repo 'AppStream'
+1.
+Error: Failed to download metadata for repo 'AppStream' # 下载meta信息失败
+问题的原因
+先看看CentOS7的yum.repos.d
+自动探测
+自动换行
+[21:19:17 root@C7-1 ~]#ll /etc/yum.repos.d/
+total 44
+-rw-r--r--. 1 root root 2523 Oct 27 22:47 CentOS-Base.repo
+-rw-r--r--. 1 root root 1664 Sep  5  2019 CentOS-Base.repo.bak
+-rw-r--r--. 1 root root 1309 Sep  5  2019 CentOS-CR.repo
+-rw-r--r--. 1 root root  649 Sep  5  2019 CentOS-Debuginfo.repo
+-rw-r--r--. 1 root root  314 Sep  5  2019 CentOS-fasttrack.repo
+-rw-r--r--. 1 root root  630 Sep  5  2019 CentOS-Media.repo
+-rw-r--r--. 1 root root 1331 Sep  5  2019 CentOS-Sources.repo
+-rw-r--r--. 1 root root 6639 Sep  5  2019 CentOS-Vault.repo
+-rw-r--r--. 1 root root  951 Oct  2  2017 epel.repo
+-rw-r--r--. 1 root root 1050 Oct  2  2017 epel-testing.repo
+ 
+再看看CentOS8的yum.repos.d
+自动探测
+自动换行
+[root@C8-3 ~]# ll /etc/yum.repos.d/
+total 56
+-rw-r--r--. 1 root root  815 Oct 28 02:33 CentOS-AppStream.repo
+-rw-r--r--. 1 root root 1792 Mar 25  2020 CentOS-Base.repo
+-rw-r--r--. 1 root root  712 Jan  2  2020 CentOS-Base.repo.backup
+-rw-r--r--. 1 root root 1792 Mar 25  2020 CentOS-Base.repo.backup.3
+-rw-r--r--. 1 root root  798 Jan  2  2020 CentOS-centosplus.repo
+-rw-r--r--. 1 root root 1043 Jan  2  2020 CentOS-CR.repo
+-rw-r--r--. 1 root root  668 Jan  2  2020 CentOS-Debuginfo.repo
+-rw-r--r--. 1 root root  756 Jan  2  2020 CentOS-Extras.repo
+-rw-r--r--. 1 root root  338 Jan  2  2020 CentOS-fasttrack.repo
+-rw-r--r--. 1 root root  738 Jan  2  2020 CentOS-HA.repo
+-rw-r--r--. 1 root root  928 Jan  2  2020 CentOS-Media.repo
+-rw-r--r--. 1 root root  736 Jan  2  2020 CentOS-PowerTools.repo
+-rw-r--r--. 1 root root 1382 Jan  2  2020 CentOS-Sources.repo
+-rw-r--r--. 1 root root   74 Jan  2  2020 CentOS-Vault.repo
+ 
+CentOS 8 多了一个 CentOS-AppStream.repo
+这是出问题的关键。
+查看一下CentOS-AppStream.repo
+自动探测
+自动换行
+[root@C8-3 ~]# cat /etc/yum.repos.d/CentOS-AppStream.repo.bac 
+# CentOS-AppStream.repo
+#
+# The mirror system uses the connecting IP address of the client and the
+# update status of each mirror to pick mirrors that are updated to and
+# geographically close to the client.  You should use this for CentOS updates
+# unless you are manually picking other mirrors.
+#
+# If the mirrorlist= does not work for you, as a fall back you can try the
+# remarked out baseurl= line instead.
+#
+#
+ 
+[AppStream]
+name=CentOS-$releasever - AppStream
+mirrorlist=http://mirrorlist.centos.org/?release=$releasever&arch=$basearch&repo=AppStream&infra=$infra
+baseurl=http://mirror.centos.org/$contentdir/$releasever/AppStream/$basearch/os/
+#mirrorlist=http://mirror.centos.org/$contentdir/$releasever/AppStream/$basearch/os/
+gpgcheck=1
+enabled=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial
+ 
+解决问题的方法
+我们在替换yum源的时候，按照镜像网站的操作方式，只替换了CentOS-Base.repo。
+可是在CentOS8中，CentOS-AppStream.repo的内容没有更新。
+解决方法有两种
+1.
+直接删除掉CentOS-AppStream.repo这个文件。（不推荐）
+1.
+将CentOS-AppStream.repo文件中的链接更新
+解决问题
+查看跟新后的CentOS-Base.repo文件
+自动探测
+自动换行
+[root@C8-3 ~]# cat /etc/yum.repos.d/CentOS-Base.repo
+# CentOS-Base.repo
+#
+# The mirror system uses the connecting IP address of the client and the
+# update status of each mirror to pick mirrors that are updated to and
+# geographically close to the client.  You should use this for CentOS updates
+# unless you are manually picking other mirrors.
+#
+# If the mirrorlist= does not work for you, as a fall back you can try the
+# remarked out baseurl= line instead.
+#
+#
+ 
+[BaseOS]
+name=Qcloud centos OS - $basearch
+baseurl=http://mirrors.cloud.tencent.com/centos/$releasever/BaseOS/$basearch/os/
+enabled=1
+gpgcheck=1
+gpgkey=http://mirrors.cloud.tencent.com/centos/RPM-GPG-KEY-CentOS-Official﻿
+ 
+[centosplus]
+name=Qcloud centosplus - $basearch
+baseurl=http://mirrors.cloud.tencent.com/centos/$releasever/centosplus/$basearch/os/
+enabled=0
+gpgcheck=1
+gpgkey=http://mirrors.cloud.tencent.com/centos/RPM-GPG-KEY-CentOS-Official﻿
+ 
+[extras]
+name=Qcloud centos extras - $basearch
+baseurl=http://mirrors.cloud.tencent.com/centos/$releasever/extras/$basearch/os/
+enabled=1
+gpgcheck=1
+gpgkey=http://mirrors.cloud.tencent.com/centos/RPM-GPG-KEY-CentOS-Official﻿
+ 
+[fasttrack]
+name=Qcloud centos fasttrack - $basearch
+baseurl=http://mirrors.cloud.tencent.com/centos/$releasever/fasttrack/$basearch/os/
+enabled=0
+gpgcheck=1
+gpgkey=http://mirrors.cloud.tencent.com/centos/RPM-GPG-KEY-CentOS-Official﻿
+ 
+[AppStream]
+name=Qcloud centos AppStream - $basearch
+baseurl=http://mirrors.cloud.tencent.com/centos/$releasever/AppStream/$basearch/os/
+enabled=0
+gpgcheck=1
+gpgkey=http://mirrors.cloud.tencent.com/centos/RPM-GPG-KEY-CentOS-Official﻿
+ 
+[PowerTools]
+name=Qcloud centos PowerTools - $basearch
+baseurl=http://mirrors.cloud.tencent.com/centos/$releasever/PowerTools/$basearch/os/
+enabled=0
+gpgcheck=1
+gpgkey=http://mirrors.cloud.tencent.com/centos/RPM-GPG-KEY-CentOS-Official﻿
+ 
+替换更新
+1.
+找到跟新后CentOS-Base.repo中[AppStream]标签内的内容并复制
+自动探测
+自动换行
+[AppStream]
+name=Qcloud centos AppStream - $basearch
+baseurl=http://mirrors.cloud.tencent.com/centos/$releasever/AppStream/$basearch/os/
+enabled=0
+gpgcheck=1
+gpgkey=http://mirrors.cloud.tencent.com/centos/RPM-GPG-KEY-CentOS-Official﻿
+ 
+1.
+打开CentOS-AppStream.repo，注释掉原有内容，并插入新内容
+自动探测
+自动换行
+[root@C8-3 ~]# vim /etc/yum.repos.d/CentOS-AppStream.repo
+#[AppStream]
+#name=CentOS-$releasever - AppStream
+#mirrorlist=http://mirrorlist.centos.org/?release=$releasever&arch=$basearch&repo=AppStream&infra=$infra
+#baseurl=http://mirror.centos.org/$contentdir/$releasever/AppStream/$basearch/os/
+#mirrorlist=http://mirror.centos.org/$contentdir/$releasever/AppStream/$basearch/os/
+#gpgcheck=1
+#enabled=1
+#pgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial
+ 
+[AppStream]
+name=Qcloud centos AppStream - $basearch
+baseurl=http://mirrors.cloud.tencent.com/centos/$releasever/AppStream/$basearch/os/
+enabled=0
+gpgcheck=1
+gpgkey=http://mirrors.cloud.tencent.com/centos/RPM-GPG-KEY-CentOS-Official﻿
+ 
+我们要养成修改内容时使用注释而不是删除的操作方法，用来对比前后差异，出问题了取消掉注释就可以了。
+问题解决
+重新运行yum makecache，操作成功
+自动探测
+自动换行
+[root@C8-3 ~]# yum makecache 
+Repository AppStream is listed more than once in the configuration
+Repository extras is listed more than once in the configuration
+Repository PowerTools is listed more than once in the configuration
+Repository centosplus is listed more than once in the configuration
+Repository fasttrack is listed more than once in the configuration
+Qcloud centos OS - x86_64                      119 kB/s | 2.2 MB     00:19    
+Qcloud centos extras - x86_64                  477  B/s | 8.1 kB     00:17    
+Metadata cache created.
+ 
+小贴士：
+修改文件的良好习惯：
+1.
+先备份需要修改的文件，cp a a.bac
+2.
+在修改文件内容时，添加新内容前，对原内容使用注释而非删除
+* * * 胖并快乐着的死肥宅 * * *
