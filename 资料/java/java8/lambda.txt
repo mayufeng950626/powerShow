@@ -62,7 +62,57 @@ java8的函数式接口注解： @FunctionInterface
 
 
 
+Filter 是过滤器，也可以当查询方法使用
 
+EmployeeTestCase.java
+
+package com.example.demo;
+ 
+import lombok.extern.log4j.Log4j2;
+import org.junit.Test;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+ 
+@Log4j2
+public class EmployeeTestCase extends BaseTest{
+    @Test
+    public void filter() {
+        //获取包含Alex员工列表
+        List<Employee> employeeIs1 = list.stream().filter(e -> e.getName().contains("Alex")).collect(Collectors.toList());
+        assertTrue(null != employeeIs1 && employeeIs1.get(0).getId() == 1l);
+        //获取包含Jacks名称的首位员工
+        Optional<Employee> employeeJaskFirst2 = list.stream().filter(e -> e.getName().contains("Jack")).findFirst();
+        assertEquals(employeeJaskFirst2.get().getId(), 3);
+        //获取所有薪酬为1500的员工
+        List<Employee> employees1350 = list.stream().filter(employee -> employee.getSalary() == 1500).peek(System.out::println).collect(Collectors.toList());
+        assertEquals(2, employees1350.size());
+    }
+}
+
+BaseTest.java
+    package com.example.demo;
+
+    import java.util.Arrays;
+    import java.util.List;
+
+    public class BaseTest {
+        protected static final List<Employee> list = Arrays.asList(
+                new Employee(1, "Alex", 1000),
+                new Employee(2, "Michael", 2000),
+                new Employee(3, "Jack", 1500),
+                new Employee(4, "Owen", 1500),
+                new Employee(5, "Denny", 2000));
+
+        protected static final List<List<Employee>> listFlat = Arrays.asList(
+                Arrays.asList(new Employee(1, "Alex", 1000),
+                              new Employee(2, "Michael", 2000)),
+                Arrays.asList(new Employee(3, "Jack", 1500),
+                              new Employee(4, "Owen", 1500)),
+                Arrays.asList(new Employee(5, "Denny", 2000)));
+    }
 
 
 

@@ -1,0 +1,117 @@
+1.redis过期时间介绍
+有时候我们并不希望redis的key一直存在。例如缓存，验证码等数据，我们希望它们能在一定时间内自动的被销毁。redis提供了一些命令，能够让我们对key设置过期时间，并且让key过期之后被自动删除
+
+2.redis过期时间相关命令
+1.EXPIRE PEXPIRE 
+
+　　　　EXPIRE 接口定义：EXPIRE key "seconds"
+　　　　接口描述：设置一个key在当前时间"seconds"(秒)之后过期。返回1代表设置成功，返回0代表key不存在或者无法设置过期时间。
+
+　
+　　　　PEXPIRE 接口定义：PEXPIRE key "milliseconds"
+　　　　接口描述：设置一个key在当前时间"milliseconds"(毫秒)之后过期。返回1代表设置成功，返回0代表key不存在或者无法设置过期时间。
+
+127.0.0.1:6379> set aa bb
+OK
+127.0.0.1:6379> EXPIRE aa 60
+(integer) 1
+127.0.0.1:6379> EXPIRE aa 600
+(integer) 1
+ 
+
+2.EXPIREAT PEXPIREAT
+
+　　　　EXPIREAT 接口定义：EXPIREAT key "timestamp"
+　　　　接口描述：设置一个key在"timestamp"(时间戳(秒))之后过期。返回1代表设置成功，返回0代表key不存在或者无法设置过期时间。
+
+
+　　　　PEXPIREAT 接口定义：PEXPIREAT key "milliseconds-timestamp"
+　　　　接口描述：设置一个key在"milliseconds-timestamp"(时间戳(毫秒))之后过期。返回1代表设置成功，返回0代表key不存在或者无法设置过期时间
+
+127.0.0.1:6379> set aa bb
+OK
+127.0.0.1:6379> EXPIREAT aa 1586941008
+(integer) 1
+127.0.0.1:6379> PEXPIREAT aa 1586941008000
+(integer) 1
+ 
+
+3.TTL PTTL
+
+　　　　TTL 接口定义：TTL key
+　　　　接口描述：获取key的过期时间。如果key存在过期时间，返回剩余生存时间(秒)；如果key是永久的，返回-1；如果key不存在或者已过期，返回-2。
+
+
+　　　　PTTL 接口定义：PTTL key
+　　　　接口描述：获取key的过期时间。如果key存在过期时间，返回剩余生存时间(毫秒)；如果key是永久的，返回-1；如果key不存在或者已过期，返回-2。
+
+127.0.0.1:6379> set aa bb
+OK
+127.0.0.1:6379> EXPIRE  aa 60
+(integer) 1
+127.0.0.1:6379> ttl aa
+(integer) 58
+127.0.0.1:6379> ttl aa
+(integer) 56
+127.0.0.1:6379> pttl aa
+(integer) 40395
+4.PERSIST
+
+　　　　PERSIST 接口定义：PERSIST key
+　　　　接口描述：移除key的过期时间，将其转换为永久状态。如果返回1，代表转换成功。如果返回0，代表key不存在或者之前就已经是永久状态。
+
+127.0.0.1:6379> set aa bb
+OK
+127.0.0.1:6379> EXPIRE  aa 600
+(integer) 1
+127.0.0.1:6379> ttl aa
+(integer) 596
+127.0.0.1:6379> PERSIST aa
+(integer) 1
+127.0.0.1:6379> ttl aa
+(integer) -1
+5.SETEX
+
+　　SETEX 接口定义：SETEX key "seconds" "value"
+　　接口描述：SETEX在逻辑上等价于SET和EXPIRE合并的操作，区别之处在于SETEX是一条命令，而命令的执行是原子性的，所以不会出现并发问题。
+
+127.0.0.1:6379> SETEX aa 100 bb
+OK
+127.0.0.1:6379> pttl aa
+(integer) 95834
+127.0.0.1:6379> ttl aa
+(integer) 81
+ 
+
+3.redis如何清理过期key　
+　　redis出于性能上的考虑，无法做到对每一个过期的key进行即时的过期监听和删除。但是redis提供了其它的方法来清理过期的key。
+
+　　1.被动清理
+
+　　当用户主动访问一个过期的key时，redis会将其直接从内存中删除。
+
+　　2.主动清理
+
+　　在redis的持久化中，我们知道redis为了保持系统的稳定性，健壮性，会周期性的执行一个函数。在这个过程中，会进行之前已经提到过的自动的持久化操作，同时也会进行内存的主动清理。
+　　在内存主动清理的过程中，redis采用了一个随机算法来进行这个过程：简单来说，redis会随机的抽取N(默认100)个被设置了过期时间的key，检查这其中已经过期的key，将其清除。同时，如果这其中已经过期的key超过了一定的百分比M(默认是25)，则将继续执行一次主动清理，直至过期key的百分比在概率上降低到M以下。
+
+　　3.内存不足时触发主动清理
+
+　　在redis的内存不足时，也会触发主动清理。
+
+4.redis内存不足时的策略
+　　redis是一个基于内存的数据库，如果存储的数据量很大，达到了内存限制的最大值，将会出现内存不足的问题。redis允许用户通过配置maxmemory-policy参数，指定redis在内存不足时的解决策略
+
+
+
+      1.volatile-lru 使用LRU算法删除一个键(只针对设置了过期时间的key
+　　2.allkeys-lru 使用LRU算法删除一个键
+　　3.volatile-lfu 使用LFU算法删除一个键(只针对设置了过期时间的键)
+　　4.allkeys-lfu 使用LFU算法删除一个键
+　　5.volatile-random 随机删除一个键(只针对设置了过期时间的键)
+　　6.allkeys-random 随机删除一个键
+　　7.volatile-ttl 删除最早过期的一个键
+　　8.noeviction 不删除键，返回错误信息(redis默认选项)
+
+　　对于只针对设置了过期时间的键进行删除的策略，在所有的可被删除的键(非永久的键)都被删除时内存依然不足，将会抛出错误。
+　　其中，LRU算法--->最近最少使用算法，较为注重于时间；LFU算法--->最近最不常用算法，较为注重于被访问频率。

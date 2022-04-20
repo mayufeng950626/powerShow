@@ -1,0 +1,24 @@
+在使用react的过程中，发现需要渲染的数据是从后端获取到的标签语言，如果直接将他放在react里面是不能够正确渲染的。
+
+　　解决方法如下：
+
+render() {
+     let listdata = this.state.data.entity ? this.state.data.entity.article :''
+      return (
+         <ContentWrap>
+           <Header>{listdata.meta}</Header>
+           <TextContent>
+              <h1>{listdata.title}</h1>
+              <div>
+                   <span>来源：{listdata.author}</span>
+                   <span>时间: {listdata.createTime}</span>
+                   <span>浏览: {listdata.clickTimes}</span>
+             </div>
+             <div dangerouslySetInnerHTML = {{ __html: listdata.content}}></div>,
+         </TextContent>
+        </ContentWrap>
+)
+}
+}
+ 
+如果直接渲染数据他会按照后台传过来的标签原封不动的进行输出，不会进行解析的
